@@ -1,0 +1,37 @@
+<input> 0 456
+read 1
+load 1
+jz end0
+read 2
+load 2
+jz end0
+load = 0
+store 3
+load 2
+sub 1
+jgtz else
+
+if:
+	load 3
+	add 1
+	store 3
+	load 2
+	sub = 1 
+	store 2
+jgtz if
+jmp end
+else:
+	load 3
+	add 2
+	store 3
+	load 1
+	sub = 1 
+	store 1
+jgtz else
+jmp end
+end0:
+	write = 0
+	halt
+end:
+          write 3
+          halt
