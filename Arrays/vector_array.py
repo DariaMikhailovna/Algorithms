@@ -8,7 +8,7 @@ class VectorArray:
         self.__vector = vector
 
     def __str__(self):
-        return str(self.__array)
+        return str(self.__array[:self.__size])
 
     def __getitem__(self, index):
         return self.__array[index]
@@ -30,12 +30,9 @@ class VectorArray:
         if index is None:
             self.__array[self.__size] = item
         else:
-            t = self.__array[index]
+            for i in range(self.__size, index, -1):
+                self.__array[i] = self.__array[i - 1]
             self.__array[index] = item
-            for i in range(index + 1, self.__size + 1):
-                tt = self.__array[i]
-                self.__array[i] = t
-                t = tt
         self.__size += 1
 
     def remove(self, index):
