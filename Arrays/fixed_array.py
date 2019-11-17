@@ -12,8 +12,8 @@ class FixedArray:
     def __setitem__(self, index, value):
         self.__array[index] = value
 
-    def __str__(self):
-        return str(self.__array)
+    def __repr__(self):
+        return repr(self.__array)
 
     @staticmethod
     def mem_copy(array_from, index_from, array_to, index_to, size):

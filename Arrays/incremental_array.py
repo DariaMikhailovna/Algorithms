@@ -6,8 +6,8 @@ class IncrementalArray:
         self.__size = 0
         self.__array = FixedArray(reserved_size)
 
-    def __str__(self):
-        return str(self.__array[:self.__size])
+    def __repr__(self):
+        return repr(self.__array[:self.__size])
 
     def __getitem__(self, index):
         return self.__array[index]

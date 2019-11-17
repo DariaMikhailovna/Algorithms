@@ -6,8 +6,8 @@ class SingleArray:
         self.__size = 0
         self.__array = FixedArray(0)
 
-    def __str__(self):
-        return str(self.__array)
+    def __repr__(self):
+        return repr(self.__array)
 
     def __getitem__(self, index):
         return self.__array[index]
