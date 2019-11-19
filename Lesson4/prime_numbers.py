@@ -38,26 +38,30 @@ def is_prime_fast_fast(number):
 
 
 def eratosthenes(number):
-    a = list(range(number + 1))
-    a[1] = 0
-    for i in a:
-        if i > 1:
-            for j in range(i * i, number, i):
-                a[j] = 0
-    return number - a.count(0)
+    a = [True] * (number + 1)
+    a[0] = False
+    a[1] = False
+    for i in range(number + 1):
+        if a[i]:
+            l = i * i
+            if l > number:
+                break
+            for j in range(l, number + 1, i):
+                a[j] = False
+    return sum(a)
 
 
 if __name__ == '__main__':
     print(is_prime(25))
     print(is_prime_fast(2))
     res = 0
-    for i in range(1, 100000 + 1):
+    for i in range(1, 1000 + 1):
         if is_prime_fast(i):
             res += 1
     print(res)
-    # res = 0
-    # for i in range(1, 1000000 + 1):
-    #     if is_prime_fast_fast(i):
-    #         res += 1
-    # print(res)
-    print(eratosthenes(100000))
+    res = 0
+    for i in range(1, 10000 + 1):
+        if is_prime_fast_fast(i):
+            res += 1
+    print(res)
+    print(eratosthenes(100000000))
