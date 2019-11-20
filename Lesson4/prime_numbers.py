@@ -51,8 +51,8 @@ def eratosthenes(number):
     return sum(a)
 
 
-if __name__ == '__main__':
-    print(is_prime(25))
+def main():
+    print(is_prime(2))
     print(is_prime_fast(2))
     res = 0
     for i in range(1, 1000 + 1):
@@ -64,4 +64,8 @@ if __name__ == '__main__':
         if is_prime_fast_fast(i):
             res += 1
     print(res)
-    print(eratosthenes(100000000))
+    print(eratosthenes(1000))
+
+
+if __name__ == '__main__':
+    main()
