@@ -3,13 +3,36 @@ import time
 import copy
 
 
-def get_gap():
-    pass
+def gaps_n_2(n):
+    n //= 2
+    while n > 0:
+        yield n
+        n //= 2
 
 
-def shell_sort(arr):
-    gap = len(arr) // 2
-    while gap > 0:
+def gaps_n_3div2(n):
+    max_k = 0
+    while 2 ** max_k - 1 < n:
+        max_k += 1
+    for k in range(max_k - 1, -1, -1):
+        yield 2 ** k - 1
+
+
+def gaps_n_log_2_n(n):
+    res = []
+    p = 1
+    while p < n:
+        q = p
+        while q < n:
+            res.append(q)
+            q *= 3
+        p *= 2
+    res.sort(reverse=True)
+    return res
+
+
+def shell_sort(arr, gaps):
+    for gap in gaps(len(arr)):
         i = 0
         while i + gap < len(arr):
             j = i + gap
@@ -19,41 +42,50 @@ def shell_sort(arr):
                 j -= gap
             arr[j] = tmp
             i += 1
-        gap //= 2
     return arr
 
 
-def get_arr(size):
-    arr = []
-    for i in range(size):
-        arr.append(i)
-    return arr
-
-
-def get_time_work(arr):
+def get_time_work(arr, gaps):
     start = time.time()
-    shell_sort(arr)
+    shell_sort(arr, gaps)
     end = time.time()
-    return int((end - start))
+    return round(end - start, 3)
 
 
-if __name__ == '__main__':
-    size = 500000
-    arr_sort = get_arr(size)
+def shuffle_k_elements(arr, k):
+    assert len(arr) >= k
+    positions = set()
+    while len(positions) < k:
+        pos = random.randint(0, len(arr) - 1)
+        positions.add(pos)
+    positions = list(positions)
+    values = [arr[pos] for pos in positions]
+    random.shuffle(values)
+    for pos, val in zip(positions, values):
+        arr[pos] = val
+
+
+def run(gaps):
+    size = 2 ** 18
+    arr_sort = list(range(size))
     arr_rnd = copy.deepcopy(arr_sort)
     random.shuffle(arr_rnd)
     arr_rnd_10percent = copy.deepcopy(arr_sort)
-    for i in range(size // 10):
-        rnd_ind = random.randint(0, size - 1)
-        arr_rnd_10percent[rnd_ind] = i
+    shuffle_k_elements(arr_rnd_10percent, size // 10)
     arr_rnd_5el = copy.deepcopy(arr_sort)
-    for i in range(5):
-        rnd_ind = random.randint(0, size - 1)
-        rnd_val = random.randint(0, size - 1)
-        arr_rnd_5el[rnd_ind] = rnd_val
-    print(f'Время работы алгоритма сортировки с шагом gap //= 2 и размером {size}:')
-    print('сортированный массив: ' + str(get_time_work(arr_sort)) + ' секунды')
-    print('случайный массив: ' + str(get_time_work(arr_rnd)) + ' секунды')
-    print('10% элементов случайны: ' + str(get_time_work(arr_rnd_10percent)) + ' секунды')
-    print('5 элементов случайны: ' + str(get_time_work(arr_rnd_5el)) + ' секунды')
+    shuffle_k_elements(arr_rnd_5el, 5)
+    print(f'Время работы алгоритма сортировки с шагом {gaps.__name__} с количеством элементов {size}:')
+    print('сортированный массив: ' + str(get_time_work(arr_sort, gaps)) + ' секунды')
+    print('случайный массив: ' + str(get_time_work(arr_rnd, gaps)) + ' секунды')
+    print('10% элементов случайны: ' + str(get_time_work(arr_rnd_10percent, gaps)) + ' секунды')
+    print('5 элементов случайны: ' + str(get_time_work(arr_rnd_5el, gaps)) + ' секунды')
+    print()
 
+
+def main():
+    for gaps in [gaps_n_2, gaps_n_3div2, gaps_n_log_2_n]:
+        run(gaps)
+
+
+if __name__ == '__main__':
+    main()
