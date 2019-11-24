@@ -36,13 +36,13 @@ if __name__ == '__main__':
     arr_rnd = copy.deepcopy(arr_sort)
     random.shuffle(arr_rnd)
     arr_rnd_5percent = copy.deepcopy(arr_sort)
-    shuffle_k_elements(arr_rnd_5percent, size // 5)
+    shuffle_k_elements(arr_rnd_5percent, size // 20)
     print(f'Время работы алгоритма shell сортировки с асимптотикой n^(3/2) с количеством элементов {size}:')
-    print('случайный массив: ' + str(get_time_work(arr_rnd, gaps_n_3div2)) + ' секунды')
-    print('5% элементов случайны: ' + str(get_time_work(arr_rnd_5percent, gaps_n_3div2)) + ' секунды')
+    print('случайный массив: ' + str(get_time_work(copy.deepcopy(arr_rnd), gaps_n_3div2)) + ' секунды')
+    print('5% элементов случайны: ' + str(get_time_work(copy.deepcopy(arr_rnd_5percent), gaps_n_3div2)) + ' секунды')
     print()
     print(f'Время работы алгоритма heap_sort с количеством элементов {size}:')
-    print('случайный массив: ' + str(get_work_time(arr_rnd)) + ' секунды')
-    print('5% элементов случайны: ' + str(get_work_time(arr_rnd_5percent)) + ' секунды')
+    print('случайный массив: ' + str(get_work_time(copy.deepcopy(arr_rnd))) + ' секунды')
+    print('5% элементов случайны: ' + str(get_work_time(copy.deepcopy(arr_rnd_5percent))) + ' секунды')
 
 
