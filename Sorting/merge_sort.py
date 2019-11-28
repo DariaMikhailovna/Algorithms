@@ -62,7 +62,7 @@ def main(count_numbers):
     # print(arr)
     # create_file_with_numbers(10000000)
     arr = []
-    for i in range(1000000):
+    for i in range(count_numbers):
         arr.append(rnd.randint(0, 65535))
     print(f'Время работы обычной сортировки слиянием (внутренней) массива из {count_numbers} элементов:')
     print(str(get_work_time(copy.deepcopy(arr), merge_sort)) + ' секунд')
