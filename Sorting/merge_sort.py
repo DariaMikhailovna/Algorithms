@@ -56,12 +56,11 @@ def get_work_time(arr, function):
     return round(end - start, 3)
 
 
-if __name__ == '__main__':
+def main(count_numbers):
     # arr = [1, 245, 5, 7, 9, 100, 2, 4, 6, 8, 900, 0]
     # merge_sort(arr, 0, len(arr))
     # print(arr)
     # create_file_with_numbers(10000000)
-    count_numbers = 100000000
     arr = []
     for i in range(1000000):
         arr.append(rnd.randint(0, 65535))
@@ -70,3 +69,7 @@ if __name__ == '__main__':
     print()
     print(f'Время работы комбинированной сортировки слиянием (внутренней) массива из {count_numbers} элементов:')
     print(str(get_work_time(copy.deepcopy(arr), merge_sort_composite)) + ' секунд')
+
+
+if __name__ == '__main__':
+    main(100000000)
