@@ -35,11 +35,11 @@ def merge_sort_composite(arr, left, right):
     if right - left <= 1:
         return
     if right - left <= 1024:
-        arr[left:right] = heap_sort(arr[left:right])
+        arr[left:right] = sorted(arr[left:right])
         return
     center = left + (right - left) // 2
-    merge_sort(arr, left, center)
-    merge_sort(arr, center, right)
+    merge_sort_composite(arr, left, center)
+    merge_sort_composite(arr, center, right)
     merge(arr, left, center, right)
 
 
@@ -72,4 +72,4 @@ def main(count_numbers):
 
 
 if __name__ == '__main__':
-    main(100000000)
+    main(10000000)
