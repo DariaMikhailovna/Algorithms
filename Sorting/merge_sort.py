@@ -57,9 +57,9 @@ def merge_out(file, left, center, right):
         j = center
         with open(file, 'r+b') as fi:
             with open(file, 'r+b') as fj:
-                fi.seek(2 * i, 0)
-                fj.seek(2 * j, 0)
                 while i < center and j < right:
+                    fi.seek(2 * i, 0)
+                    fj.seek(2 * j, 0)
                     num_i = fi.read(2)
                     num_j = fj.read(2)
                     if num_i < num_j:
@@ -68,15 +68,15 @@ def merge_out(file, left, center, right):
                     else:
                         temp.write(num_j)
                         j += 1
+                fi.seek(2 * i, 0)
+                fj.seek(2 * j, 0)
                 while i < center:
                     temp.write(fi.read(2))
                     i += 1
-                while j < right:
+                while j <= right:
                     temp.write(fj.read(2))
                     j += 1
         with open(file, 'r+b') as f:
-            r = temp.read()
-            temp.seek(0, 2)
             end = temp.tell()
             temp.seek(0, 0)
             f.seek(left * 2, 0)
