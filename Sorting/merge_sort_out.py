@@ -65,12 +65,31 @@ def merge_sort_out(file, left, right):
     merge_out(file, left, center, right)
 
 
-def get_work_time(function, arr=None, file=None, count_numbers=None):
+def merge_sort_composite_out(file, left, right):
+    if right - left <= 1:
+        return
+    if right - left <= 1024:
+        arr = []
+        with open(file, 'r+b') as f:
+            f.seek(left, 0)
+            for i in range(right - left):
+                num = f.read(2)
+                arr.append(num)
+        arr = heap_sort(arr)
+        with open(file, 'r+b') as f:
+            f.seek(left, 0)
+            for i in range(right - left):
+                f.write(arr[i])
+        return
+    center = left + (right - left) // 2
+    merge_sort_composite_out(file, left, center)
+    merge_sort_composite_out(file, center, right)
+    merge_out(file, left, center, right)
+
+
+def get_work_time(function, file, count_numbers):
     start = time.time()
-    if arr is None:
-        function(file, 0, count_numbers)
-    else:
-        function(arr, 0, len(arr))
+    function(file, 0, count_numbers)
     end = time.time()
     return round(end - start, 3)
 
@@ -79,9 +98,13 @@ def main(count_numbers):
     file = 'rnd_numbers.bin'
     create_file_with_numbers(count_numbers, file)
     print(f'Время работы обычной сортировки слиянием (внешней) массива из {count_numbers} элементов:')
-    print(str(get_work_time(function=merge_sort_out, file=file, count_numbers=count_numbers)) + ' секунд')
+    print(str(get_work_time(merge_sort_out, file, count_numbers)) + ' секунд')
+    print()
+    create_file_with_numbers(count_numbers, file)
+    print(f'Время работы комбинированной сортировки слиянием (внешней) массива из {count_numbers} элементов:')
+    print(str(get_work_time(merge_sort_composite_out, file, count_numbers)) + ' секунд')
     print()
 
 
 if __name__ == '__main__':
-    main(1000)
+    main(10000)
