@@ -6,8 +6,6 @@ def create_file_with_numbers(count_numbers, file):
     with open(file, 'wb') as f:
         for i in range(count_numbers):
             f.write(rnd.randint(0, 65535).to_bytes(2, byteorder='big'))
-            # t = rnd.randint(48, 57) * 256 + rnd.randint(48, 57)
-            # f.write(t.to_bytes(2, byteorder='big'))
 
 
 def counting_sort_out(file, count_numbers):
