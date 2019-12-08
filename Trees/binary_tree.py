@@ -2,6 +2,7 @@ import random as rnd
 from time import time
 import sys
 import threading
+from typing import Optional
 
 
 class Node:
@@ -13,8 +14,8 @@ class Node:
 
 
 class BinaryTree:
-    def __init__(self, data=None):
-        self.root: Node = data
+    def __init__(self):
+        self.root: Optional[Node] = None
 
     def insert(self, data):
         self.root = self._insert_rec(data, self.root)
@@ -102,9 +103,7 @@ def get_work_time(function, tree, count_numbers):
     return round(end - start, 5)
 
 
-def main(count_numbers):
-    tree_sort = BinaryTree()
-    tree_rnd = BinaryTree()
+def main(count_numbers, tree_sort, tree_rnd):
     print(f'Добавление {count_numbers} элементов:')
     work_time = get_work_time(add_rnd_numbers, tree_rnd, count_numbers)
     print('В случайном порядке: ' + str(work_time) + ' секунд')
@@ -130,6 +129,8 @@ def main(count_numbers):
 if __name__ == '__main__':
     sys.setrecursionlimit(10 ** 6)
     threading.stack_size(10 ** 8)
-    t = threading.Thread(target=lambda: main(20000))
+    tree1 = BinaryTree()
+    tree2 = BinaryTree()
+    t = threading.Thread(target=lambda: main(20000, tree1, tree2))
     t.start()
     t.join()
