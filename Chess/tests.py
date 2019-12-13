@@ -1,7 +1,10 @@
 from get_len import get_len_f
 from bitboard_fen import get_bitboard_by_fen_f
 from bitboard_knight import get_knight_moves_f
-from bitboard_king import get_king_moves_f
+from bitboard_king import get_king_moves
+from fen_ascii import get_ascii_table
+from move_counter import get_move_counter
+from half_move_counter import get_half_move_counter
 
 
 import os
@@ -26,7 +29,11 @@ def main():
     run_tests(get_len_f, '!.TESTS')
     run_tests(get_bitboard_by_fen_f, '0.BITS\\1744.0.Bitboard - FEN')
     run_tests(get_knight_moves_f, '0.BITS\\3710.0.Bitboard - Конь')
-    # run_tests(get_king_moves_f, '0.BITS\\3733.0.Bitboard - Король')
+    # run_tests(get_king_moves, '0.BITS\\3733.0.Bitboard - Король')
+    run_tests(get_ascii_table, '1.FEN\\1743.1.FEN - ASCII')
+    run_tests(get_move_counter, '1.FEN\\1746.1.Счётчик ходов')
+    # run_tests(get_half_move_counter, '1.FEN\\3694.1.Счётчик полуходов')
+    pass
 
 
 if __name__ == '__main__':
