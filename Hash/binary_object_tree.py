@@ -2,8 +2,9 @@ from typing import Optional
 
 
 class Node:
-    def __init__(self, data=None, left=None, right=None):
-        self.data: Optional[()] = data
+    def __init__(self, key=None, value=None, left=None, right=None):
+        self.key = key
+        self.value = value
         self.left = left
         self.right = right
 
@@ -12,21 +13,34 @@ class BinaryTree:
     def __init__(self):
         self.root: Optional[Node] = None
 
-    def insert(self, data):
-        self.root = self._insert_rec(data, self.root)
+    def __iter__(self):
+        return self._iter_rec(self.root)
 
-    def _insert_rec(self, data, curr=None):
+    def _iter_rec(self, curr):
         if curr is None:
-            return Node(data)
-        if data[0] == curr.data[0]:
-            curr[1] = data[1]
-            return curr
-        if data[0] < curr.data[0]:
-            curr.left = self._insert_rec(data, curr.left)
-            return curr
-        if data[0] > curr.data[0]:
-            curr.right = self._insert_rec(data, curr.right)
-            return curr
+            return
+        for key, value in self._iter_rec(curr.left):
+            yield key, value
+        yield curr.key, curr.value
+        for key, value in self._iter_rec(curr.right):
+            yield key, value
+
+    def insert(self, key, value):
+        self.root, ret = self._insert_rec(key, value, self.root)
+        return ret
+
+    def _insert_rec(self, key, value, curr=None):
+        if curr is None:
+            return Node(key, value), True
+        if key == curr.key:
+            curr.value = value
+            return curr, False
+        if key < curr.key:
+            curr.left, ret = self._insert_rec(key, value, curr.left)
+            return curr, ret
+        if key > curr.key:
+            curr.right, ret = self._insert_rec(key, value, curr.right)
+            return curr, ret
 
     def search(self, key):
         return self._search_rec(key, self.root)
@@ -34,27 +48,28 @@ class BinaryTree:
     def _search_rec(self, key, curr=None):
         if curr is None:
             return None
-        if curr.data[0] == key:
+        if curr.key == key:
             return curr
-        if key < curr.data[0]:
+        if key < curr.key:
             return self._search_rec(key, curr.left)
-        if key > curr.data[0]:
+        if key > curr.key:
             return self._search_rec(key, curr.right)
 
     def remove(self, key):
-        self.root = self._remove_rec(key, self.root)
+        self.root, ret = self._remove_rec(key, self.root)
+        return ret
 
     def _remove_rec(self, key, curr):
         if curr is None:
-            return None
-        if key < curr.data[0]:
-            curr.left = self._remove_rec(key, curr.left)
-            return curr
-        if key > curr.data[0]:
-            curr.right = self._remove_rec(key, curr.right)
-            return curr
+            return None, False
+        if key < curr.key:
+            curr.left, ret = self._remove_rec(key, curr.left)
+            return curr, ret
+        if key > curr.key:
+            curr.right, ret = self._remove_rec(key, curr.right)
+            return curr, ret
         if curr.left is None:
-            return curr.right
+            return curr.right, True
         else:
             res = curr.left
             tmp = curr.right
@@ -62,4 +77,4 @@ class BinaryTree:
             while curr.right:
                 curr = curr.right
             curr.right = tmp
-            return res
+            return res, True
