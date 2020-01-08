@@ -4,13 +4,14 @@ from copy import deepcopy
 
 class HashTable:
     def __init__(self):
-        self.__data = [[] for _ in range(1000)]
+        self.__data = []
+        self._resize(10)
         self.__size = 0
 
     def __setitem__(self, key, value):
         self.__size += 1
         if self.__size > len(self.__data):
-            self._resize()
+            self._resize(2 * len(self.__data))
         index = self._get_hash(key)
         if type(self.__data[index]) == list:
             exists = False
@@ -57,9 +58,9 @@ class HashTable:
     def _get_hash(self, key):
         return int(key) % len(self.__data)
 
-    def _resize(self):
+    def _resize(self, new_size):
         arr = deepcopy(self.__data)
-        self.__data = [[] for _ in range(2 * len(self.__data))]
+        self.__data = [[] for _ in range(new_size)]
         self.__size = 0
         for x in arr:
             for key, value in x:
