@@ -19,11 +19,12 @@ class SimpleHashTable:
     def __getitem__(self, key):
         second_hash = self.get_second_hash(key)
         assert self.data[second_hash][0] == key
-        t = self.data[second_hash][1]
-        return t
+        return self.data[second_hash][1]
 
     def __delitem__(self, key):
-        pass
+        second_hash = self.get_second_hash(key)
+        assert self.data[second_hash][0] == key
+        self.data[second_hash] = (key, None)
 
 
 class PerfectHashTable:
@@ -57,7 +58,14 @@ class PerfectHashTable:
             return data[1]
 
     def __delitem__(self, key):
-        pass
+        first_hash = self.get_first_hash(key)
+        data = self.__data[first_hash]
+        if data is None:
+            raise PerfectHashTableKeyError
+        if type(data) is SimpleHashTable:
+            del self.__data[first_hash][key]
+        else:
+            self.__data[first_hash] = (key, None)
 
     def build(self):
         for key in self.__keys:
@@ -90,6 +98,8 @@ if __name__ == '__main__':
     pht = PerfectHashTable(range(0, 100))
     for i in range(31):
         pht[i] = i + 1
+    for i in range(10):
+        del pht[i]
     for i in range(30):
         print(pht[i])
     print(pht[101])
