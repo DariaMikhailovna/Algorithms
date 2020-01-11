@@ -1,19 +1,24 @@
 from universal_hash import *
 
 
+class PerfectHashTableKeyError(KeyError):
+    pass
+
+
 class SimpleHashTable:
-    def __init__(self, second_hash, size):
-        self.get_second_hash = second_hash
+    def __init__(self, size):
+        self.get_second_hash = UnivHash(size)
         self.__size = size
         self.data = [None] * size
 
     def __setitem__(self, key, value):
         second_hash = self.get_second_hash(key)
         assert self.data[second_hash][0] == key
-        self.data[second_hash] = (self.data[second_hash][0], value)
+        self.data[second_hash] = (key, value)
 
     def __getitem__(self, key):
         second_hash = self.get_second_hash(key)
+        assert self.data[second_hash][0] == key
         t = self.data[second_hash][1]
         return t
 
@@ -44,6 +49,8 @@ class PerfectHashTable:
     def __getitem__(self, key):
         first_hash = self.get_first_hash(key)
         data = self.__data[first_hash]
+        if data is None:
+            raise PerfectHashTableKeyError
         if type(data) is SimpleHashTable:
             return data[key]
         else:
@@ -60,14 +67,14 @@ class PerfectHashTable:
             size = len(self.__data[i])
             if size == 0:
                 self.__data[i] = None
-            if size == 1:
+            elif size == 1:
                 self.__data[i] = (self.__data[i][0], None)
-            if size > 1:
+            else:
                 keys = self.__data[i]
                 size = size * size
                 while True:
                     flag = True
-                    self.__data[i] = SimpleHashTable(UnivHash(size), size)
+                    self.__data[i] = SimpleHashTable(size)
                     for key in keys:
                         second_hash = self.__data[i].get_second_hash(key)
                         if self.__data[i].data[second_hash] is None:
@@ -85,3 +92,4 @@ if __name__ == '__main__':
         pht[i] = i + 1
     for i in range(30):
         print(pht[i])
+    print(pht[101])
