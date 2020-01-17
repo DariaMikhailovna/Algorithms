@@ -19,7 +19,7 @@ class DemucronAlgorithm:
 
     def run_algorithm(self):
         result = []
-        while True:
+        while len(self.next_null) != 0:
             next_null = []
             result.append(self.next_null)
             for next in self.next_null:
@@ -30,8 +30,6 @@ class DemucronAlgorithm:
                         if self.degree[vertex] == 0:
                             next_null.append(vertex)
             self.next_null = next_null
-            if len(self.next_null) == 0:
-                break
         return result
 
 
