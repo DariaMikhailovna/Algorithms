@@ -1,7 +1,6 @@
 class DemucronAlgorithm:
     def __init__(self, adjacency_vector):
         self.adjacency_vector = adjacency_vector
-        self.used = [False] * len(adjacency_vector)
         self.degree = [0] * len(adjacency_vector)
         self.next_null = []
         self.set_degree()
@@ -23,12 +22,10 @@ class DemucronAlgorithm:
             next_null = []
             result.append(self.next_null)
             for next in self.next_null:
-                if not self.used[next]:
-                    self.used[next] = True
-                    for vertex in self.adjacency_vector[next]:
-                        self.degree[vertex] -= 1
-                        if self.degree[vertex] == 0:
-                            next_null.append(vertex)
+                for vertex in self.adjacency_vector[next]:
+                    self.degree[vertex] -= 1
+                    if self.degree[vertex] == 0:
+                        next_null.append(vertex)
             self.next_null = next_null
         return result
 
