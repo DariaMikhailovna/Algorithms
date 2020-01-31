@@ -1,7 +1,7 @@
 
 def kmp(string):
     result = [0] * len(string)
-    for j in range(1, len(result)):
+    for j in range(len(result)):
         i = j
         while i > 0:
             t = result[i - 1]
