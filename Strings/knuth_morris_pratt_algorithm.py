@@ -2,16 +2,14 @@
 def kmp(string):
     result = [0] * len(string)
     for j in range(1, len(result)):
-        i = j - 1
-        while result[i] > 0:
-            t = result[i]
+        i = j
+        while i > 0:
+            t = result[i - 1]
             if string[t] == string[j]:
                 result[j] = t + 1
                 break
             else:
-                i = t - 1
-        if result[j] == 0 and string[0] == string[j]:
-            result[j] += 1
+                i = t
     return result
 
 
