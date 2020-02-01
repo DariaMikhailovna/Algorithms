@@ -1,3 +1,4 @@
+import sys
 from collections import defaultdict
 
 
@@ -30,15 +31,18 @@ class BoyerMoore:
                     break
         return res
 
-    def calc_shift(self, symbol_number):
-        return max(1, self.prefix_table[self.pattern[symbol_number]], self.suffix_table[symbol_number])
+    def calc_shift(self, symbol, symbol_number):
+        return max(1, symbol_number - self.prefix_table[symbol], self.suffix_table[symbol_number])
 
     def run(self, text):
         offset = 0
         while offset + len(self.pattern) <= len(text):
+            print(text, file=sys.stderr)
+            print(' ' * offset + self.pattern, file=sys.stderr)
             for symbol_number in range(len(self.pattern) - 1, -1, -1):
                 if self.pattern[symbol_number] != text[offset + symbol_number]:
-                    offset += self.calc_shift(symbol_number)
+                    print(' ' * (offset + symbol_number) + '^', file=sys.stderr)
+                    offset += self.calc_shift(text[offset + symbol_number], symbol_number)
                     break
             else:
                 return offset
@@ -46,10 +50,8 @@ class BoyerMoore:
 
 
 def main():
-    string = 'CABABCAB'
-    pattern = 'ABACABADABACABA'
-    # pattern = 'ab'
-    # pattern = 'aba'
+    pattern = 'CABAB'
+    string = 'ABACDBBACACAABABAB'
     bm = BoyerMoore(pattern)
     print(bm.run(string))
 
