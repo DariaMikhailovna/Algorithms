@@ -17,22 +17,17 @@ class BoyerMoore:
         pattern_len = len(self.pattern)
         res = [0] * pattern_len
         for suffix_len in range(pattern_len):
-            for str_index in range(pattern_len - 2, -1, -1):
-                match_cnt = 0
+            for str_end in range(pattern_len - 1, -1, -1):
+                ok = True
                 for suf_index in range(suffix_len):
-                    if self.pattern[str_index - suf_index] == self.pattern[pattern_len - suf_index - 1]:
-                        match_cnt += 1
-                if match_cnt == suffix_len:
-                    res[pattern_len - suffix_len - 1] = pattern_len - suffix_len - str_index + match_cnt - 1
+                    if str_end - suf_index - 1 < 0:
+                        break
+                    if self.pattern[str_end - suf_index - 1] != self.pattern[pattern_len - suf_index - 1]:
+                        ok = False
+                        break
+                if ok:
+                    res[pattern_len - suffix_len - 1] = pattern_len - str_end
                     break
-        last = 0
-        for str_index in range(pattern_len):
-            if res[str_index] != 0:
-                last = res[str_index]
-                break
-        for str_index in range(pattern_len):
-            if res[str_index] == 0:
-                res[str_index] = last
         return res
 
     def calc_shift(self, symbol_number):
@@ -53,7 +48,8 @@ class BoyerMoore:
 def main():
     string = 'CABABCAB'
     pattern = 'ABACABADABACABA'
-    # pattern = 'aaaaaaaa'
+    # pattern = 'ab'
+    # pattern = 'aba'
     bm = BoyerMoore(pattern)
     print(bm.run(string))
 
