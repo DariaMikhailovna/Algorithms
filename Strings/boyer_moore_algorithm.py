@@ -31,7 +31,7 @@ class BoyerMoore:
         return res
 
     def calc_shift(self, symbol_number):
-        return max(1, self.prefix_table[symbol_number], self.suffix_table[symbol_number])
+        return max(1, self.prefix_table[self.pattern[symbol_number]], self.suffix_table[symbol_number])
 
     def run(self, text):
         offset = 0
