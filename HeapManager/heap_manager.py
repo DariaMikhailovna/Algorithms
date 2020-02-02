@@ -119,7 +119,8 @@ def test():
     class Tester:
         def __init__(self, size):
             self.manager = HeapManager(size)
-            self.cur_id = 1
+            self.id = 1
+            self.arrays = {}
             self.debug()
 
         def debug(self):
@@ -127,22 +128,55 @@ def test():
             print(repr(self.manager))
 
         def allocate(self, size):
-            arr = self.manager.allocate(size)
-            arr.fill(self.cur_id)
-            self.cur_id += 1
+            curr_id = self.id
+            self.id += 1
+            print(f'array #{curr_id} = allocate {size} elements')
+            self.arrays[curr_id] = self.manager.allocate(size)
+            self.arrays[curr_id].fill(curr_id)
             self.debug()
-            return [arr]
+            return curr_id
 
-        def free(self, arr):
-            arr[0].fill(0)
-            del arr[0]
+        def free(self, curr_id):
+            print(f'free array #{curr_id}')
+            self.arrays[curr_id].fill(0)
+            del self.arrays[curr_id]
             self.debug()
 
     tester = Tester(10)
-    arr1 = tester.allocate(2)
-    tester.free(arr1)
-    arr2 = tester.allocate(2)
+    arr = tester.allocate(2)
+    tester.free(arr)
+    arr = tester.allocate(2)
+    tester.free(arr)
+    arr = tester.allocate(10)
+    tester.free(arr)
+    try:
+        arr = tester.allocate(11)
+        tester.free(arr)
+    except MemoryError:
+        print('MemoryError')
+    arr = tester.allocate(5)
+    arr2 = tester.allocate(5)
+    tester.free(arr)
     tester.free(arr2)
+    arr1 = tester.allocate(3)
+    arr2 = tester.allocate(3)
+    arr3 = tester.allocate(3)
+    tester.free(arr2)
+    try:
+        arr = tester.allocate(4)
+        tester.free(arr)
+    except MemoryError:
+        print('MemoryError')
+    arr4 = tester.allocate(2)
+    tester.free(arr4)
+    tester.free(arr3)
+    arr5 = tester.allocate(1)
+    arr6 = tester.allocate(4)
+    tester.free(arr5)
+    arr7 = tester.allocate(2)
+    tester.free(arr6)
+    tester.free(arr7)
+    tester.free(arr1)
 
 
 if __name__ == '__main__':
