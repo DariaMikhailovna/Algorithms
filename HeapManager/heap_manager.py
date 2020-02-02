@@ -15,6 +15,12 @@ class HeapManager:
         self.__data = [0] * total_memory
         self.__blocks = self.BlocksList(total_memory)
 
+    def __repr__(self):
+        return '[' + ', '.join(map(repr, self.__blocks)) + ']'
+
+    def debug(self):
+        return str(list(self.__data))
+
     def allocate(self, array_size):
         for curr_item in self.__blocks:
             if curr_item.is_free and len(curr_item) >= array_size:
@@ -45,6 +51,9 @@ class Item:
         self.start = start
         self.end = end
         self.is_free = is_free
+
+    def __repr__(self):
+        return str((self.start, self.end, self.is_free))
 
     def free(self):
         self.is_free = True
@@ -88,9 +97,53 @@ class Array:
     def __getitem__(self, key):
         return self.__data[self.__item.start + key]
 
-    def __del__(self, key):
+    def __del__(self):
         self.__item.free()
 
     def __len__(self):
         return len(self.__item)
 
+    def __iter__(self):
+        for i in range(len(self)):
+            yield self[i]
+
+    def __str__(self):
+        return str(list(self))
+
+    def fill(self, value):
+        for i in range(len(self)):
+            self[i] = value
+
+
+def test():
+    class Tester:
+        def __init__(self, size):
+            self.manager = HeapManager(size)
+            self.cur_id = 1
+            self.debug()
+
+        def debug(self):
+            print(self.manager.debug())
+            print(repr(self.manager))
+
+        def allocate(self, size):
+            arr = self.manager.allocate(size)
+            arr.fill(self.cur_id)
+            self.cur_id += 1
+            self.debug()
+            return [arr]
+
+        def free(self, arr):
+            arr[0].fill(0)
+            del arr[0]
+            self.debug()
+
+    tester = Tester(10)
+    arr1 = tester.allocate(2)
+    tester.free(arr1)
+    arr2 = tester.allocate(2)
+    tester.free(arr2)
+
+
+if __name__ == '__main__':
+    test()
