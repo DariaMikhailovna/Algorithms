@@ -47,7 +47,19 @@ class Item:
         self.is_free = is_free
 
     def free(self):
-        pass
+        self.is_free = True
+        if self.prev and self.prev.is_free:
+            self.start = self.prev.start
+            self.prev = self.prev.prev
+            if self.prev:
+                self.prev.next = self
+            else:
+                self.container.first_item = self
+        if self.next and self.next.is_free:
+            self.end = self.next.end
+            self.next = self.next.next
+            if self.next:
+                self.next.prev = self
 
     def split(self, array_size):
         item = Item(self.container, self.start, self.start + array_size, False)
