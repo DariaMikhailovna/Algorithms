@@ -2,15 +2,14 @@
 class Dijkstra:
     inf = float('inf')
 
-    def __init__(self, adjacency_vector, start_vertex, end_vertex=None):
+    def __init__(self, adjacency_vector, start_vertex):
         self.adjacency_vector = adjacency_vector
         self.start_vertex = start_vertex
-        self.end_vertex = end_vertex
         self.vertex_count = len(adjacency_vector)
         self.weight = [self.inf] * self.vertex_count
         self.used = [False] * self.vertex_count
 
-    def run_algorithm(self):
+    def run_algorithm(self, end_vertex=None):
         self.weight[self.start_vertex] = 0
         while True:
             mn = None
@@ -22,12 +21,15 @@ class Dijkstra:
                         mn = i
             if mn is None or self.weight[mn] == self.inf:
                 break
+            if mn == end_vertex:
+                return self.weight[mn]
             for vertex, weight in self.adjacency_vector[mn]:
                 if not self.used[vertex]:
                     new_weight = self.weight[mn] + weight
                     if new_weight < self.weight[vertex]:
                         self.weight[vertex] = new_weight
             self.used[mn] = True
+        return None
 
 
 def main():
@@ -42,6 +44,8 @@ def main():
     dijkstra = Dijkstra(adjacency_vector, 0)
     dijkstra.run_algorithm()
     print(*dijkstra.weight)
+    dijkstra = Dijkstra(adjacency_vector, 0)
+    print(dijkstra.run_algorithm(1))
 
 
 if __name__ == '__main__':
