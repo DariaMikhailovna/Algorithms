@@ -103,7 +103,6 @@ def main():
         print(res_unzipped)
         assert res_unzipped == arr
 
-    # filename = 'test_image.png'
     filename = 'file.bmp'
     filename_zipped = 'zipped_' + filename + '.bin'
     filename_unzipped = 'unzipped_' + filename
