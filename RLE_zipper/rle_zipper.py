@@ -25,17 +25,18 @@ def zip_array(arr):
             s += res[j + 1]
             if res[j] == '2':
                 s += res[j + 1]
-            if cnt == 128:
-                res2 += '-' + str(cnt)
-                cnt = 0
-                res2 += s
-                s = ''
+            if cnt >= 128:
+                res2 += '-128'
+                cnt -= 128
+                res2 += s[:128]
+                s = s[128:]
             j += 2
         if j == i:
             res2 += res[i]
             i += 1
         else:
-            res2 += '-' + str(cnt) + s
+            if cnt > 0:
+                res2 += '-' + str(cnt) + s
             cnt = 0
             s = ''
             i = j
@@ -83,6 +84,8 @@ def main():
     arr = 'abcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjl'
     arr = 'zip-архив и написать вывод. + 2 байта Вариант А. Алгоритм RLE. 1.'
     arr = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab'
+    arr = 'abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab'
+    arr = 'ababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababb'
     res_zip = zip_array(arr)
     print(res_zip)
     res_dezip = dezip_array(res_zip)
