@@ -12,7 +12,7 @@ def byte_to_number(byte):
 
 def zip_bytes(arr):
     assert type(arr) == bytes
-    res = b''
+    res = bytearray()
     cnt = 1
     for i in range(len(arr)):
         if i == len(arr) - 1:
@@ -20,16 +20,16 @@ def zip_bytes(arr):
             break
         if arr[i] == arr[i + 1]:
             cnt += 1
-            if int(cnt) == 128:
+            if cnt == 128:
                 res += number_to_byte(127) + arr[i:i + 1]
                 cnt = 1
         else:
             res += number_to_byte(cnt) + arr[i:i + 1]
             cnt = 1
-    final_res = b''
+    final_res = bytearray()
     i = 0
     cnt = 0
-    s = b''
+    s = bytearray()
     while i < len(res):
         j = i
         while j < len(res) and 1 <= byte_to_number(res[j]) <= 2:
@@ -49,13 +49,13 @@ def zip_bytes(arr):
             if cnt > 0:
                 final_res += number_to_byte(-cnt) + s
             cnt = 0
-            s = b''
+            s = bytearray()
             i = j
-    return final_res
+    return bytes(final_res)
 
 
 def unzip_bytes(arr):
-    res = b''
+    res = bytearray()
     i = 0
     while i < len(arr):
         num = byte_to_number(arr[i])
@@ -67,7 +67,7 @@ def unzip_bytes(arr):
             num = -num
             res += arr[i:i + num]
             i += num
-    return res
+    return bytes(res)
 
 
 def zip_file(file_in, file_out):
