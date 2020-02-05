@@ -3,3 +3,6 @@ venv/
 venv2/
 __pycache__/
 Sorting/rnd_numbers.bin
+RLE_zipper/zipped_file.bmp.bin
+RLE_zipper/unzipped_file.bmp
+RLE_zipper/test_image.png
