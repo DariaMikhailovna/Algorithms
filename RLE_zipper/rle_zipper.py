@@ -8,9 +8,9 @@ def zip_array(arr):
             break
         if arr[i] == arr[i + 1]:
             cnt += 1
-            if int(cnt) == 127:
-                res += str(cnt) + arr[i]
-                cnt = 0
+            if int(cnt) == 128:
+                res += str(127) + arr[i]
+                cnt = 1
         else:
             res += str(cnt) + arr[i]
             cnt = 1
@@ -82,6 +82,7 @@ def main():
     arr = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
     arr = 'abcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjlabcdefghjuydlgindfjl'
     arr = 'zip-архив и написать вывод. + 2 байта Вариант А. Алгоритм RLE. 1.'
+    arr = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab'
     res_zip = zip_array(arr)
     print(res_zip)
     res_dezip = dezip_array(res_zip)
