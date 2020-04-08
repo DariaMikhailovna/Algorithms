@@ -6,3 +6,5 @@ Sorting/rnd_numbers.bin
 RLE_zipper/zipped_file.bmp.bin
 RLE_zipper/unzipped_file.bmp
 RLE_zipper/test_image.png
+Neural_networks/my_model.h5
+Neural_networks/training/
