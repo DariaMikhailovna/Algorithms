@@ -4,12 +4,12 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import os
+from PIL import Image
+from numpy import asarray
 
 
 class MyNeural:
-    class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
-                   'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+    class_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
     def __init__(self, epoch_count):
         tf.compat.v1.disable_eager_execution()
@@ -23,8 +23,8 @@ class MyNeural:
 
     @staticmethod
     def load_data():
-        fashion_mnist = keras.datasets.fashion_mnist
-        return fashion_mnist.load_data()
+        mnist = keras.datasets.mnist
+        return mnist.load_data()
 
     def scale_images(self):
         self.train_images = self.train_images / 255.0
@@ -182,16 +182,26 @@ class MyNeural:
         plt.legend()
         plt.show()
 
+    def go_predict(self, img):
+        image = Image.open(img)
+        data = asarray(image)
+        data = data[..., 0]
+        data = 1 - data / 255
+        img = (np.expand_dims(data, 0))
+        predictions_single = self.model.predict(img)
+        print(np.argmax(predictions_single[0]))
+
 
 if __name__ == '__main__':
     neural = MyNeural(150)
     # neural.show_images()
     neural.build_model()
-    neural.fit_model()
-    # neural.load_model()
-    neural.get_loss_and_acc()
-    neural.get_predictions()
+    # neural.fit_model()
+    neural.load_model()
+    # neural.get_loss_and_acc()
+    # neural.get_predictions()
     # neural.get_one_image_and_table(12)
     # neural.get_many_images_and_table(5, 3)
-    neural.plot_history(neural.history)
+    # neural.plot_history(neural.history)
+    neural.go_predict('image.png')
 
