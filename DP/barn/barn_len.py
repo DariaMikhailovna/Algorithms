@@ -1,4 +1,4 @@
-def main():
+def get_len():
     n, m = map(int, input().split())
     t = int(input())
     matrix = [[1] * n for _ in range(m)]
@@ -14,4 +14,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    get_len()
