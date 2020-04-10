@@ -189,7 +189,7 @@ class MyNeural:
         data = 1 - data / 255
         img = (np.expand_dims(data, 0))
         predictions_single = self.model.predict(img)
-        print(np.argmax(predictions_single[0]))
+        return np.argmax(predictions_single[0])
 
 
 if __name__ == '__main__':
