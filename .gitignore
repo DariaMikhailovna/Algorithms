@@ -8,3 +8,5 @@ RLE_zipper/unzipped_file.bmp
 RLE_zipper/test_image.png
 Neural_networks/my_model.h5
 Neural_networks/training/
+*.png
+*.ps
