@@ -30,10 +30,10 @@ class MyNeural:
         self.train_images = self.train_images / 255.0
         self.test_images = self.test_images / 255.0
 
-    def show_images(self, count=25):
+    def show_images(self, count=100 ):
         plt.figure(figsize=(10, 10))
         for i in range(count):
-            plt.subplot(5, 5, i + 1)
+            plt.subplot(10, 10, i + 1)
             plt.xticks([])
             plt.yticks([])
             plt.grid(False)
@@ -182,11 +182,32 @@ class MyNeural:
         plt.legend()
         plt.show()
 
+    @staticmethod
+    def centroid(data):
+        center_x = 0
+        center_y = 0
+        w = 0
+        for x in range(len(data)):
+            for y in range(len(data[x])):
+                if data[x][y]:
+                    w += data[x][y]
+                    center_x += data[x][y] * (x + 0.5)
+                    center_y += data[x][y] * (y + 0.5)
+        if w:
+            center_x /= w
+            center_y /= w
+        center_x = np.round(center_x)
+        center_y = np.round(center_y)
+        data = np.roll(data, int(14 - center_x), axis=0)
+        data = np.roll(data, int(14 - center_y), axis=1)
+        return data
+
     def go_predict(self, img):
         image = Image.open(img)
         data = asarray(image)
         data = data[..., 0]
         data = 1 - data / 255
+        data = self.centroid(data)
         img = (np.expand_dims(data, 0))
         predictions_single = self.model.predict(img)
         return np.argmax(predictions_single[0])
@@ -194,14 +215,14 @@ class MyNeural:
 
 if __name__ == '__main__':
     neural = MyNeural(150)
-    # neural.show_images()
-    neural.build_model()
+    neural.show_images()
+    # neural.build_model()
     # neural.fit_model()
-    neural.load_model()
+    # neural.load_model()
     # neural.get_loss_and_acc()
     # neural.get_predictions()
     # neural.get_one_image_and_table(12)
     # neural.get_many_images_and_table(5, 3)
     # neural.plot_history(neural.history)
-    neural.go_predict('image.png')
+    # neural.go_predict('image.png')
 
