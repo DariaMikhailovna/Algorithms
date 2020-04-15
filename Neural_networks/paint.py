@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image
 from mnist import MyNeural
 import threading
+import numpy as np
 
 
 class Paint(Frame):
@@ -12,8 +13,9 @@ class Paint(Frame):
         self.canvas = Canvas(self, bg="white")
         self.parent = parent
         self.color = "black"
-        self.brush_size = 20
+        self.brush_size = 22
         self.label = None
+        self.percents = None
         self.setup()
         self.predictor = threading.Thread(target=self.run_prediction_loop)
         self.predictor.setDaemon(True)
@@ -42,6 +44,8 @@ class Paint(Frame):
         Label(self, text="Предсказание:").grid(row=0, column=3, sticky=W)
         self.label = Label(self, text='Nan')
         self.label.grid(row=0, column=4, sticky=W)
+        self.percents = Label(self, text='Nan')
+        self.percents.grid(row=1, column=4, sticky=W)
 
     def set_color(self, new_color):
         self.color = new_color
@@ -50,8 +54,10 @@ class Paint(Frame):
         self.canvas.postscript(file="image" + '.ps', colormode='color')
         img = Image.open("image" + '.ps').resize([28, 28])
         img.save("image" + '.png', 'png')
-        prediction = str(neural.go_predict('image.png'))
-        self.label.configure(text=prediction)
+        prediction = neural.go_predict('image.png')[0]
+        self.label.configure(text=str(np.argmax(prediction)))
+        prediction = list(map(lambda x: int(np.round(x * 100)), prediction))
+        self.percents.configure(text=str(prediction))
 
     def run_prediction_loop(self):
         neural = self.set_neural()

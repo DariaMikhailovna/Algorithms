@@ -211,8 +211,7 @@ class MyNeural:
         data = 1 - data / 255
         data = self.centroid(data)
         img = (np.expand_dims(data, 0))
-        predictions_single = self.model.predict(img)
-        return np.argmax(predictions_single[0])
+        return self.model.predict(img)
 
 
 if __name__ == '__main__':
