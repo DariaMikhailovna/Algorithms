@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from PIL import Image
 from numpy import asarray
+from keras import regularizers
 
 
 class MyNeural:
@@ -44,9 +45,9 @@ class MyNeural:
     def build_model(self):
         model = keras.Sequential([
             keras.layers.Flatten(input_shape=(28, 28)),
-            keras.layers.Dense(128, activation='relu'),
+            keras.layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.01), bias_regularizer=regularizers.l2(0.01)),
             keras.layers.Dropout(0.3),
-            keras.layers.Dense(128, activation='relu'),
+            keras.layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.01), bias_regularizer=regularizers.l2(0.01)),
             keras.layers.Dropout(0.3),
             keras.layers.Dense(10, activation='softmax')
         ])
@@ -216,7 +217,7 @@ class MyNeural:
 
 if __name__ == '__main__':
     neural = MyNeural(150)
-    neural.show_images()
+    # neural.show_images()
     # neural.build_model()
     # neural.fit_model()
     # neural.load_model()
