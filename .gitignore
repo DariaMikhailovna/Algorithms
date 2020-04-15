@@ -10,3 +10,4 @@ Neural_networks/my_model.h5
 Neural_networks/training/
 *.png
 *.ps
+*.h5
