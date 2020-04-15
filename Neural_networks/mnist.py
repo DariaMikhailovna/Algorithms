@@ -200,6 +200,8 @@ class MyNeural:
         center_y = np.round(center_y)
         data = np.roll(data, int(14 - center_x), axis=0)
         data = np.roll(data, int(14 - center_y), axis=1)
+        # plt.imshow(data, cmap=plt.cm.binary)
+        # plt.show()
         return data
 
     def go_predict(self, img):
