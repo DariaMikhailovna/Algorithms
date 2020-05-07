@@ -31,7 +31,7 @@ class MyNeural:
         self.train_images = self.train_images / 255.0
         self.test_images = self.test_images / 255.0
 
-    def show_images(self, count=100 ):
+    def show_images(self, count=100):
         plt.figure(figsize=(10, 10))
         for i in range(count):
             plt.subplot(10, 10, i + 1)
@@ -45,9 +45,13 @@ class MyNeural:
     def build_model(self):
         model = keras.Sequential([
             keras.layers.Flatten(input_shape=(28, 28)),
-            keras.layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.01), bias_regularizer=regularizers.l2(0.01)),
+            keras.layers.Dense(128, activation='relu',
+                               kernel_regularizer=regularizers.l2(0.01),
+                               bias_regularizer=regularizers.l2(0.01)),
             keras.layers.Dropout(0.3),
-            keras.layers.Dense(128, activation='relu', kernel_regularizer=regularizers.l2(0.01), bias_regularizer=regularizers.l2(0.01)),
+            keras.layers.Dense(128, activation='relu',
+                               kernel_regularizer=regularizers.l2(0.01),
+                               bias_regularizer=regularizers.l2(0.01)),
             keras.layers.Dropout(0.3),
             keras.layers.Dense(10, activation='softmax')
         ])
@@ -65,7 +69,7 @@ class MyNeural:
                                       epochs=self.epoch_count,
                                       validation_split=0.2,
                                       batch_size=512,
-                                      verbose=0,
+                                      verbose=1,
                                       callbacks=[self.Callback()])
         self.load_weights()
         self.save_model()
@@ -216,15 +220,15 @@ class MyNeural:
 
 
 if __name__ == '__main__':
-    neural = MyNeural(150)
+    neural = MyNeural(1500)
     # neural.show_images()
-    # neural.build_model()
-    # neural.fit_model()
-    # neural.load_model()
-    # neural.get_loss_and_acc()
-    # neural.get_predictions()
-    # neural.get_one_image_and_table(12)
-    # neural.get_many_images_and_table(5, 3)
-    # neural.plot_history(neural.history)
+    neural.build_model()
+    neural.fit_model()
+    neural.load_model()
+    neural.get_loss_and_acc()
+    neural.get_predictions()
+    neural.get_one_image_and_table(12)
+    neural.get_many_images_and_table(5, 3)
+    neural.plot_history(neural.history)
     # neural.go_predict('image.png')
 
